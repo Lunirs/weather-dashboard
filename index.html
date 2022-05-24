@@ -9,14 +9,10 @@
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-      crossorigin="anonymous"
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Kalam&display=swap"
-      rel="stylesheet"
-    />
+      crossorigin="anonymous"/>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Kalam&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/style.css" />
   </head>
   <body>
@@ -25,18 +21,55 @@
         <div class="container">
           <h1 class="display-4 text-center">Weather Dashboard</h1>
           <p class="lead text-center">
-            Looking to travel? Check the weather of your destination for the
-            next 5 days!
+            Looking to travel? Check the weather of your destination for the next 5 days!
           </p>
         </div>
       </div>
     </header>
-
-    <script
-      src="https://code.jquery.com/jquery-3.4.1.min.js"
-      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-      crossorigin="anonymous"
-    ></script>
+    <div class="container-fluid bg-white">
+      <div class="row">
+        <div class="col-lg-3">
+          <br />
+          <h3>&#x1F50E Search:</h3>
+          <form>
+            <input
+              class="form-control mb-3"
+              type="text"
+              placeholder="San Diego"
+              aria-label="search a city to get the weather!"
+            />
+            <button class="btn btn-primary ml-2 mr-3" type="submit" id="searchBtn">
+              Search City
+            </button>
+            <button class="btn btn-primary mb-4 mt-4" type="button" id="clear-history">
+              Reset Search History
+            </button>
+          
+          </form>
+          <div id="city-history-container"></div>
+        </div>
+        <div class="col-lg-9 pb-5" id="weather-container">
+          <div class="row" id="todays-weather">
+            <div class="col-lg-12 pl-5">
+              <h2 class="city-input" class="font-weight-bold"></h2>
+              <p id="temperature" class="font-weight-bold"></p>
+              <p id="humidity" class="font-weight-bold"></p>
+              <p id="wind-speed" class="font-weight-bold"></p>
+              <p id="uv-index" class="font-weight-bold"></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <h2></h2>
+            </div>
+          </div>
+          <div class="row justify-content-between pr-5 pl-5" id="five-day">    
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="./assets/js/script.js"></script>
   </body>
