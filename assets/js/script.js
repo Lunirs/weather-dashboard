@@ -3,6 +3,107 @@ var cityHist = [];
 var url = "https://api.openweathermap.org/data/2.5/weather";
 var date = moment().format("MM/DD/YYYY");
 
+var cityInput = (city) => {
+  var cityUrl = `${url}?q=${city}&units=metric&appid=${apiKey}`;
+
+  fetch(cityUrl)
+    .then((response) => {
+      if (!response.ok) {
+        throw response.json();
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      var imgTag = $("<img>");
+      imgTag.attr(
+        "src",
+        `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
+      );
+      $(".city-input").text(data.name + ` (${date})`);
+      imgTag.appendTo($(".city-input"));
+      $("#temperature").text(`Temperature: ${data.main.temp} °C`);
+      $("#humidity").text(`Humidity: ${data.main.humidity} %`);
+      $("#wind-speed").text(`Wind Speed: ${data.wind.speed} km/h`);
+
+      $("#weather-container").css("border", "1px solid black");
+      $("#weather-container").addClass("bg-info");
+
+      uvValue(data.coord.lat, data.coord.lon);
+      fiveDay(city);
+    });
+};
+
+var uvValue = (lat, lon) => {
+  var uvUrl = `https://api.openweathermap.org/data/2.5/uvi/forecast?appid=${apiKey}&lat=${lat}&lon=${lon}&cnt=1`;
+  fetch(uvUrl)
+    .then((response) => {
+      if (!response.ok) {
+        throw response.json();
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      $("#uv-index").text(`UV-Index: ${data[0].value}`);
+      if (data[0].value <= 2) {
+        $("#uv-index").css("color", "green");
+      } else if (data[0].value <= 7) {
+        $("#uv-index").css("color", "red");
+      } else if (data[0].value <= 10) {
+        $("#uv-index").css("color", "purple");
+      }
+    });
+};
+
+var fiveDay = (city) => {
+  var fiveDayUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`;
+  fetch(fiveDayUrl)
+    .then((response) => {
+      if (!response.ok) {
+        throw response.json();
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      $("#five-day").html("");
+      for (var i = 35; i >= 3; i = i - 8) {
+        var temp = data.list[i].main.temp;
+        console.log(temp);
+        var humidity = data.list[i].main.humidity;
+        console.log(humidity);
+        var dates = data.list[i].dt_txt;
+        console.log(dates);
+
+        var cardContainer = $("<div>");
+        var fiveDayCard = $("<div>");
+        var fiveDayDate = $("<p>").text(dates);
+        var fiveDayTemp = $("<p>").text(`Temperature: ${temp} °C`);
+        var fiveDayHumidity = $("<p>").text(`Humidity: ${humidity} %`);
+        var fiveDayImg = $("<img>");
+        fiveDayImg.attr(
+          "src",
+          `https://openweathermap.org/img/wn/${data.list[i].weather[0].icon}@2x.png`
+        );
+        fiveDayCard.css("border", "1px solid black");
+        fiveDayCard.addClass("p-4 mb-4");
+        fiveDayCard.appendTo(cardContainer);
+        fiveDayDate.appendTo(fiveDayCard);
+        fiveDayImg.appendTo(fiveDayCard);
+        fiveDayTemp.appendTo(fiveDayCard);
+        fiveDayHumidity.appendTo(fiveDayCard);
+        fiveDayDate.css("font-weight", 900);
+        fiveDayCard.css("background-color", "salmon");
+        fiveDayDate.css("background-color", "salmon");
+        fiveDayTemp.css("background-color", "salmon");
+        fiveDayHumidity.css("background-color", "salmon");
+
+        cardContainer.prependTo($("#five-day"));
+      }
+    });
+};
+
 // Dependencies
 // need search bar form element
 // need submit button element
