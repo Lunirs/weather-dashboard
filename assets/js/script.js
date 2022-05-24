@@ -61,6 +61,7 @@ var cityInput = (city) => {
 
       uvValue(data.coord.lat, data.coord.lon);
       fiveDay(city);
+      $("#five-day-header").text("5-Day Forecast");
     });
 };
 
