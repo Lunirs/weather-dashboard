@@ -1,0 +1,21 @@
+* {
+  color: black;
+  margin: 0;
+  padding: 0;
+  font-family: "Kalam", cursive;
+}
+
+.container-fluid,
+h1 {
+  background-color: #e9ecef;
+}
+
+.cityHistBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black;
+  margin: auto;
+  min-width: 200px;
+  padding-right: 25px;
+}
