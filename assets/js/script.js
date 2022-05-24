@@ -4,7 +4,7 @@ var url = "https://api.openweathermap.org/data/2.5/weather";
 var date = moment().format("MM/DD/YYYY");
 var historyLim;
 
-var init = function () {
+var init = () => {
   getCity();
   renderHist();
 };
