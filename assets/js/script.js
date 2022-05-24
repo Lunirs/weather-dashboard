@@ -104,6 +104,8 @@ var fiveDay = (city) => {
         console.log(temp);
         var humidity = data.list[i].main.humidity;
         console.log(humidity);
+        var windSpeed = data.list[i].wind.speed;
+        console.log(windSpeed);
         var dates = data.list[i].dt_txt;
         console.log(dates);
 
@@ -112,6 +114,7 @@ var fiveDay = (city) => {
         var fiveDayDate = $("<p>").text(dates);
         var fiveDayTemp = $("<p>").text(`Temperature: ${temp} °C`);
         var fiveDayHumidity = $("<p>").text(`Humidity: ${humidity} %`);
+        var fiveDayWind = $("<p>").text(`Wind Speed: ${windSpeed} km/h`);
         var fiveDayImg = $("<img>");
         fiveDayImg.attr(
           "src",
@@ -124,6 +127,7 @@ var fiveDay = (city) => {
         fiveDayImg.appendTo(fiveDayCard);
         fiveDayTemp.appendTo(fiveDayCard);
         fiveDayHumidity.appendTo(fiveDayCard);
+        fiveDayWind.appendTo(fiveDayCard);
         fiveDayDate.css("font-weight", 900);
         fiveDayCard.css("background-color", "salmon");
         fiveDayDate.css("background-color", "salmon");
