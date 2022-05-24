@@ -3,6 +3,19 @@ var cityHist = [];
 var url = "https://api.openweathermap.org/data/2.5/weather";
 var date = moment().format("MM/DD/YYYY");
 
+var init = () => {
+  getCity();
+  renderHist();
+};
+
+var getCity = () => {
+  cityHist = JSON.parse(localStorage.getItem("cityHist")) || [];
+};
+
+var setCity = () => {
+  localStorage.setItem("cityHist", JSON.stringify(cityHist));
+};
+
 var cityInput = (city) => {
   var cityUrl = `${url}?q=${city}&units=metric&appid=${apiKey}`;
 
@@ -103,6 +116,29 @@ var fiveDay = (city) => {
       }
     });
 };
+
+$("#searchBtn").on("click", (event) => {
+  event.preventDefault();
+  var userInput = $(".form-control");
+  var city = userInput.val();
+  if (!userInput.val()) {
+    return;
+  }
+  if (!cityHist.includes(city)) {
+    cityHist.push(city);
+    setCity();
+  }
+  getCity();
+  renderHist();
+  cityInput(city);
+  userInput.val("");
+});
+
+$("#clear-history").on("click", (event) => {
+  event.preventDefault();
+  localStorage.clear();
+  location.reload();
+});
 
 // Dependencies
 // need search bar form element
