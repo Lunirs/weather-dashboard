@@ -59,6 +59,7 @@ var cityInput = (city) => {
         "src",
         `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
       );
+      imgTag.attr("alt", `${data.weather[0].description}`);
       $(".city-input").text(data.name + ` (${date})`);
       imgTag.appendTo($(".city-input"));
       $("#temperature").text(`Temperature: ${data.main.temp} °C`);
@@ -129,6 +130,7 @@ var fiveDay = (city) => {
           "src",
           `https://openweathermap.org/img/wn/${data.list[i].weather[0].icon}@2x.png`
         );
+        fiveDayImg.attr("alt", `${data.list[i].weather[0].description}`);
         fiveDayCard.css("border", "1px solid black");
         fiveDayCard.addClass("p-4 mb-4");
         fiveDayCard.appendTo(cardContainer);
