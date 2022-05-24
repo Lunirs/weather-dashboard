@@ -4,7 +4,7 @@ var url = "https://api.openweathermap.org/data/2.5/weather";
 var date = moment().format("MM/DD/YYYY");
 var historyLim;
 
-var init = () => {
+var init = function () {
   getCity();
   renderHist();
 };
@@ -32,7 +32,16 @@ var renderHist = () => {
     historyBtn.html(cityHist[i]);
     $("#city-history-container").prepend(historyBtn);
   }
+  var renderHistVal = (event) => {
+    event.preventDefault();
+    var city = $(event.target).attr("search");
+    console.log(city);
+    cityInput(city);
+  };
+
+  $(".cityHistBtn").on("click", renderHistVal);
 };
+
 var cityInput = (city) => {
   var cityUrl = `${url}?q=${city}&units=metric&appid=${apiKey}`;
 
@@ -163,16 +172,6 @@ $("#clear-history").on("click", (event) => {
 });
 
 init();
-
-var renderHistVal = (event) => {
-  event.preventDefault();
-  userInput = "";
-  var city = event.target.getAttribute("search");
-  console.log(city);
-  cityInput(city);
-};
-
-$(".cityHistBtn").on("click", renderHistVal);
 
 // Dependencies
 // need search bar form element
