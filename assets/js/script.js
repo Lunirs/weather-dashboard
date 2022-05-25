@@ -1,22 +1,32 @@
+//data states
+
 var apiKey = "a615206688fa7fa4d02f98f637bd877b";
+
+//local storage array
 var cityHist = [];
 var url = "https://api.openweathermap.org/data/2.5/weather";
 var date = moment().format("MM/DD/YYYY");
+//limit of how many history items we can render
 var historyLim;
 
+//initialization function that runs at the end to get the data from local storage and render our search history
 var init = () => {
   getCity();
   renderHist();
 };
 
+// function to get data from local storage
+
 var getCity = () => {
   cityHist = JSON.parse(localStorage.getItem("cityHist")) || [];
 };
 
+// function to store data into local storage
 var setCity = () => {
   localStorage.setItem("cityHist", JSON.stringify(cityHist));
 };
 
+// function to render our search input into local storage and also render them as buttons
 var renderHist = () => {
   if (cityHist.length < 8) {
     historyLim = cityHist.length;
@@ -32,6 +42,8 @@ var renderHist = () => {
     historyBtn.html(cityHist[i]);
     $("#city-history-container").prepend(historyBtn);
   }
+
+  // event listener for the buttons we created with local storage values
   var renderHistVal = (event) => {
     event.preventDefault();
     var city = $(event.target).attr("search");
@@ -42,8 +54,12 @@ var renderHist = () => {
   $(".cityHistBtn").on("click", renderHistVal);
 };
 
+// search a city by changing up query parameters
+
 var cityInput = (city) => {
   var cityUrl = `${url}?q=${city}&units=metric&appid=${apiKey}`;
+
+  // fetches response from api
 
   fetch(cityUrl)
     .then((response) => {
@@ -54,6 +70,8 @@ var cityInput = (city) => {
     })
     .then((data) => {
       console.log(data);
+
+      // create elements and renders text to current weather
       var imgTag = $("<img>");
       imgTag.attr(
         "src",
@@ -69,14 +87,23 @@ var cityInput = (city) => {
       $("#weather-container").css("border", "1px solid black");
       $("#weather-container").addClass("bg-info");
 
+      // runs the function to obtain uv index with the lat and lon coordinates we obtained with the fetched data
+
       uvValue(data.coord.lat, data.coord.lon);
+
+      // runs the function to render 5 day forecast to the page with the user input
+
       fiveDay(city);
       $("#five-day-header").text("5-Day Forecast");
     });
 };
 
+// function to obtain uv index with the lat and lon coordinates we obtained via the url with city query param
 var uvValue = (lat, lon) => {
   var uvUrl = `https://api.openweathermap.org/data/2.5/uvi/forecast?appid=${apiKey}&lat=${lat}&lon=${lon}&cnt=1`;
+
+  //fetches url for UV index with lat and lon coordinates
+
   fetch(uvUrl)
     .then((response) => {
       if (!response.ok) {
@@ -86,6 +113,9 @@ var uvValue = (lat, lon) => {
     })
     .then((data) => {
       console.log(data);
+
+      // add uv index to the html page. also changes color of uv index text based on severity of uv index.
+
       $("#uv-index").text(`UV-Index: ${data[0].value}`);
       if (data[0].value <= 2) {
         $("#uv-index").css("color", "green");
@@ -96,6 +126,8 @@ var uvValue = (lat, lon) => {
       }
     });
 };
+
+// function to obtain 5 day forecast with user's input
 
 var fiveDay = (city) => {
   var fiveDayUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`;
@@ -109,6 +141,9 @@ var fiveDay = (city) => {
     .then((data) => {
       console.log(data);
       $("#five-day").html("");
+
+      // all data was in 3 hour increments. use -8 to obtain full 24 hour cycles
+
       for (var i = 35; i >= 3; i = i - 8) {
         var temp = data.list[i].main.temp;
         console.log(temp);
@@ -118,6 +153,8 @@ var fiveDay = (city) => {
         console.log(windSpeed);
         var dates = data.list[i].dt_txt;
         console.log(dates);
+
+        // create elements, add text to created elements and append them in specific order to lay out in page.
 
         var cardContainer = $("<div>");
         var fiveDayCard = $("<div>");
@@ -150,6 +187,7 @@ var fiveDay = (city) => {
     });
 };
 
+// search button event listener runs get local storage function, render history function, and runs city input function on submit
 $("#searchBtn").on("click", (event) => {
   event.preventDefault();
   var userInput = $(".form-control");
@@ -164,8 +202,11 @@ $("#searchBtn").on("click", (event) => {
   getCity();
   renderHist();
   cityInput(city);
+  // clears out input section so user doesnt have to backspace every time they want to search a new city
   userInput.val("");
 });
+
+// clears our local storage on click
 
 $("#clear-history").on("click", (event) => {
   event.preventDefault();
